@@ -45,7 +45,7 @@ module CatarsePagseguro::Payment
           PagSeguro::Item.new(id: backer.id, description: "Apoio para o projeto #{backer.project.name}.",  amount: backer.value.to_f.to_s,  quantity: "1")
         ]
         
-        payment.redirect_url = main_app.payment_success_pagseguro_url(id: backer.id)
+        payment.redirect_url = "http://rede-staging.herokuapp.com/pt/payment/pagseguro/#{backer.id}/success"
 
         backer.update_attribute :payment_method, 'PagSeguro'
         backer.update_attribute :payment_token, payment.code
