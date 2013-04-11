@@ -26,8 +26,8 @@ module CatarsePagseguro::Payment
         payment_service_fee: notification.fee_amount.to_f
       })
       
-      if backer.transaction_id != notification.transaction_id
-        backer.update_attributes transaction_id: notification.transaction_id
+      if backer.payment_id != notification.transaction_id
+        backer.update_attributes payment_id: notification.transaction_id
       end
       
       return render status: 200, nothing: true
@@ -64,7 +64,7 @@ module CatarsePagseguro::Payment
     def success
       backer = current_user.backs.find params[:id]      
       begin
-        backer.update_attributes transaction_id: params[:id_pagseguro]
+        backer.update_attributes payment_id: params[:id_pagseguro]
         redirect_to main_app.project_backer_path(project_id: backer.project.id, id: backer.id)
       rescue Exception => e
         ::Airbrake.notify({ :error_class => "Paypal Error", :error_message => "Paypal Error: #{e.message}", :parameters => params}) rescue nil
