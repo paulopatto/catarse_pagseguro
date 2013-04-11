@@ -1,0 +1,8 @@
+h3 Pagar via PagSeguro
+
+#catarse_paypal_express_form
+  = form_tag payment_pay_pagseguro_path(params[:id]) do
+    .clearfix
+    .bootstrap-twitter
+      .loader.hide= image_tag 'loading.gif'
+      = submit_tag 'Redirecionar para o PagSeguro', :class => 'btn btn-primary btn-large'

@@ -1,0 +1,1 @@
+PaymentEngines.register({name: 'pagseguro', review_path: ->(backer){ CatarsePagseguro::Engine.routes.url_helpers.payment_review_pagseguro_path(backer) }, locale: 'pt'})
