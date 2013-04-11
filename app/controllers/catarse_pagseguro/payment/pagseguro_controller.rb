@@ -1,4 +1,5 @@
 #encoding: utf-8
+require 'pag_seguro'
 
 module CatarsePagseguro::Payment
   class PagseguroController < ApplicationController
