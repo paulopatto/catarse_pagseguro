@@ -40,9 +40,11 @@ module CatarsePagseguro::Payment
       backer = current_user.backs.find params[:id]
       begin
         payment = PagSeguro::Payment.new(::Configuration[:pagseguro_email], ::Configuration[:pagseguro_token], id: backer.key)
-
+        
+        amount = ('%.2f' % backer.value.to_f)
+        
         payment.items = [
-          PagSeguro::Item.new(id: backer.id, description: "Apoio para o projeto #{backer.project.name}.",  amount: ('%.2f' % backer.value.to_f),  quantity: "1")
+          PagSeguro::Item.new(id: backer.id, description: "Apoio para o projeto #{backer.project.name}.",  amount: amount,  quantity: "1")
         ]
         
         payment.redirect_url = "http://rede-staging.herokuapp.com/pt/payment/pagseguro/#{backer.id}/success"
