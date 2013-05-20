@@ -15,24 +15,24 @@ module CatarsePagseguro::Payment
 
     def ipn
       return unless request.post?
-      
-      notification_code = params[:notificationCode]      
+
+      notification_code = params[:notificationCode]
       notification = PagSeguro::Notification.new(::Configuration[:pagseguro_email], ::Configuration[:pagseguro_token], notification_code)
 
-      backer = Backer.find_by_key notification.id      
+      backer = Backer.find_by_key notification.id
       backer.confirm! if notification.approved?
-      
+
       backer.update_attributes({
         payment_service_fee: notification.fee_amount.to_f
       })
-      
+
       if backer.payment_id != notification.transaction_id
         backer.update_attributes payment_id: notification.transaction_id
       end
-      
+
       return render status: 200, nothing: true
     rescue Exception => e
-      return render status: 500, text: e.inspect      
+      return render status: 500, text: e.inspect
     end
 
 
@@ -40,14 +40,14 @@ module CatarsePagseguro::Payment
       backer = current_user.backs.find params[:id]
       begin
         payment = PagSeguro::Payment.new(::Configuration[:pagseguro_email], ::Configuration[:pagseguro_token], id: backer.key)
-        
+
         amount = ('%.2f' % backer.value.to_f)
-        
+
         payment.items = [
           PagSeguro::Item.new(id: backer.id, description: "Apoio para o projeto #{backer.project.name}.",  amount: amount,  quantity: "1")
         ]
-        
-        payment.redirect_url = "http://rede-staging.herokuapp.com/pt/payment/pagseguro/#{backer.id}/success"
+
+        payment.redirect_url = payment_success_pagseguro_url(backer.id)
 
         backer.update_attribute :payment_method, 'PagSeguro'
         backer.update_attribute :payment_token, payment.code
@@ -62,7 +62,7 @@ module CatarsePagseguro::Payment
     end
 
     def success
-      backer = current_user.backs.find params[:id]      
+      backer = current_user.backs.find params[:id]
       begin
         backer.update_attributes payment_id: params[:id_pagseguro]
         redirect_to main_app.project_backer_path(project_id: backer.project.id, id: backer.id)
