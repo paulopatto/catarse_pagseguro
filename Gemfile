@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
 # Declare your gem's dependencies in catarse_paypal_express.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -6,9 +6,11 @@ source "https://rubygems.org"
 gemspec
 
 # For heroku
-ruby '1.9.3'
+# TODO: Change to use dotenv
+ruby '2.1.1'
 
-gem 'rails',    '3.2.12'
+# UPTO Rails 4.x
+gem 'rails',    '> 4.0'
 gem 'sidekiq',  '~> 2.7.5'
 gem 'sinatra', require: false # required by sidekiq web interface mounted on /sidekiq
 
@@ -19,7 +21,7 @@ gem 'best_in_place'
 gem 'state_machine', require: 'state_machine/core'
 
 # paranoid stuff
-gem 'paper_trail', '~> 2.7.1'
+gem 'paper_trail'
 
 # Database and data related
 gem 'pg'
@@ -32,8 +34,7 @@ gem 'schema_associations'
 # gem 'catarse_paypal_express', git: 'git://github.com/catarse/catarse_paypal_express.git',  ref: 'bce4d8c'
 
 # Payment engine using Moip
-gem 'catarse_moip',           git: 'git://github.com/catarse/catarse_moip.git', ref: '859e9a0'
-#gem 'catarse_moip',           path: '../catarse_moip'
+gem 'catarse_moip', git: 'git://github.com/catarse/catarse_moip.git'
 
 # TODO: Check the Catarse_Moip dependency
 gem 'moip', git: 'git://github.com/moiplabs/moip-ruby.git'
@@ -59,14 +60,14 @@ gem 'cancan', git: 'git://github.com/ryanb/cancan.git', branch: '2.0', ref: 'f1c
 
 
 # Error reporting
-gem "airbrake"
+gem 'airbrake'
 
 # Email marketing
 gem 'catarse_mailchimp', git: 'git://github.com/catarse/catarse_mailchimp', ref: '45dc426'
 
 # HTML manipulation and formatting
-gem 'formtastic',   '~> 2.1.1'
-gem "auto_html",    '= 1.4.2'
+gem 'formtastic'
+gem 'auto_html',    '= 1.4.2'
 gem 'kaminari'
 
 # Uploads
@@ -102,7 +103,7 @@ group :production do
   gem 'heroku-deflater', '~> 0.4.1'
 
   # Using dalli and memcachier have not presented significative performance gains
-  # Probably this is due to our pattern of cache usage 
+  # Probably this is due to our pattern of cache usage
   # + the lack of concurrent procs in our deploy
   #gem 'memcachier'
   #gem 'dalli'
@@ -128,11 +129,11 @@ end
 
 
 group :assets do
-  gem 'sass-rails',         '~> 3.2.5'
-  gem 'coffee-rails',       '~> 3.2.2'
-  gem "compass-rails",      '~> 1.0.2'
-  gem 'uglifier',           '~> 1.0.3'
-  gem 'compass-960-plugin', '~> 0.10.4'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'compass-rails'
+  gem 'uglifier'
+  gem 'compass-960-plugin'
 end
 
 
@@ -140,10 +141,10 @@ end
 # FIXME: Not-anymore-on-development
 # Gems that are with 1 or more years on the vacuum
 gem 'weekdays'
-gem "rack-timeout"
+gem 'rack-timeout'
 
 # TODO: Take a look on dependencies. Why not auto_html?
-gem 'rails_autolink', '~> 1.0.7'
+gem 'rails_autolink'
 
 # TODO: Take a look on dependencies
-gem "RedCloth"
+gem 'RedCloth'
